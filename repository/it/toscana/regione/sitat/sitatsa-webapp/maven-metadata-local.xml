@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>it.toscana.regione.sitat</groupId>
+  <artifactId>sitatsa-webapp</artifactId>
+  <version>5.1.0</version>
+  <versioning>
+    <versions>
+      <version>5.1.0</version>
+    </versions>
+    <lastUpdated>20211119112132</lastUpdated>
+  </versioning>
+</metadata>

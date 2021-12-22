@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>it.maggioli.eldasoft</groupId>
+  <artifactId>WSDatiTabelleContesto</artifactId>
+  <version>5.6.0</version>
+  <versioning>
+    <versions>
+      <version>5.6.0</version>
+    </versions>
+    <lastUpdated>20211222102704</lastUpdated>
+  </versioning>
+</metadata>
