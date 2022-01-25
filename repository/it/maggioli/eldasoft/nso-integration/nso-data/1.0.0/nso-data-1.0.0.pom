@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>it.maggioli.eldasoft</groupId>
+		<artifactId>eldasoft-base</artifactId>
+		<version>1.2.0</version>
+	</parent>
+  <groupId>it.maggioli.eldasoft.nso-integration</groupId>
+  <artifactId>nso-data</artifactId>
+  <version>1.0.0</version>
+
+  <name>nso-data</name>
+  <url>http://www.maggioli.it</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.xmlbeans</groupId>
+      <artifactId>xmlbeans</artifactId>
+      <version>2.4.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+  <plugins>
+  		<plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+			<excludes>
+				<exclude>**/*.java</exclude>
+			</excludes>
+		</configuration>
+        </plugin>
+        <plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>xmlbeans-maven-plugin</artifactId>
+		        <executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>xmlbeans</goal>
+						</goals>
+					</execution>
+				</executions>
+				<inherited>true</inherited>
+		      </plugin>
+	          <plugin>
+			      <groupId>org.apache.maven.plugins</groupId>
+			      <artifactId>maven-source-plugin</artifactId>
+			      <executions>
+			        <execution>
+			          <id>attach-sources</id>
+			          <goals>
+			            <goal>jar</goal>
+			          </goals>
+			        </execution>
+			      </executions>
+			    </plugin>
+      </plugins>
+  
+  
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.0</version>
+          <configuration>
+			<excludes>
+				<exclude>**/*.java</exclude>
+			</excludes>
+		</configuration>
+        </plugin>
+        <!-- 
+			maven-plugin in order to use xml beans for NSO specific prj 
+			ref link: https://raw.githubusercontent.com/sbrnunes/xmlbeans-maven-sample/master/xml-sample-app-xmlbeans/pom.xml
+			-->
+		<plugin>
+	        <groupId>org.codehaus.mojo</groupId>
+	        <artifactId>xmlbeans-maven-plugin</artifactId>
+	        <version>2.3.3</version>
+	      </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

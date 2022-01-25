@@ -1,0 +1,519 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.maggioli.eldasoft</groupId>
+		<artifactId>eldasoft-base</artifactId>
+		<version>1.2.0</version>
+	</parent>
+	<groupId>it.maggioli.eldasoft</groupId>
+	<artifactId>webapp-base</artifactId>
+	<version>1.3.0</version>
+	<packaging>pom</packaging>
+
+	<organization>
+		<name>Eldasoft S.p.A.</name>
+	</organization>
+
+	<name>Super POM aziendale per le webapplication con framework geneweb</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+            <scope>provided</scope>
+		</dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+		<dependency>
+			<groupId>it.maggioli.eldasoft.commons</groupId>
+			<artifactId>geneweb-webapp</artifactId>
+			<version>${geneweb.version}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>it.maggioli.eldasoft.commons</groupId>
+			<artifactId>geneweb-engine</artifactId>
+			<version>${geneweb.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
+		<filter.filename>${filter}</filter.filename>
+	</properties>
+
+	<profiles>
+        <profile>
+            <id>env-dev</id>
+            <activation>
+                <property>
+					<!-- Activate: mvn -Denv=dev <phase> -->
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+			<build>
+				<pluginManagement>
+				<plugins>
+					<plugin>
+						<!-- build con i file di struts e ibatis corretti, un unico file di resources, e properties filtrate -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.1.1</version>
+						<configuration>
+							<overlays>
+								<overlay>
+									<groupId>it.maggioli.eldasoft.commons</groupId>
+									<artifactId>geneweb-webapp</artifactId>
+									<excludes>
+										<exclude>WEB-INF/web.xml</exclude>
+										<exclude>WEB-INF/jboss-web.xml</exclude>
+										<exclude>WEB-INF/xml/ibatis/add.xml</exclude>
+										<exclude>WEB-INF/xml/spring/tasks-add.xml</exclude>
+										<exclude>WEB-INF/xml/struts/gene-forward.xml</exclude>
+										<exclude>WEB-INF/classes/*.properties</exclude>
+										<exclude>WEB-INF/pages/homeW_.jsp</exclude>
+										<exclude>META-INF/**</exclude>
+										<exclude>configuration/**</exclude>
+									</excludes>
+								</overlay>
+							</overlays>
+							<warSourceExcludes>WEB-INF/xml/ibatis/add.xml,WEB-INF/xml/spring/tasks-add.xml</warSourceExcludes>
+							<webResources>
+								<resource>
+									<!-- "touch" del web.xml inserito nell'artefatto -->
+									<directory>src/main/webapp/WEB-INF</directory>
+									<targetPath>WEB-INF</targetPath>
+									<includes>
+										<include>web.xml</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+								<resource>
+									<!-- risorse filtrate derivate dalla webapp geneweb-webapp -->
+									<!-- NOTA BENE: MAI METTERE QUESTA RISORSA PER ULTIMA NELLA SEZIONE, ALTRIMENTI PER UN BACO DI MAVEN NON SI COPIANO I FILE! -->
+									<directory>${project.build.directory}/war/work/resources</directory>
+									<targetPath>WEB-INF</targetPath>
+									<excludes>
+										<exclude>**/context*.xml</exclude>
+										<exclude>**/application*.properties</exclude>
+									</excludes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/war/work/xml-ibatis</directory>
+									<targetPath>WEB-INF/xml/ibatis</targetPath>
+									<includes>
+										<include>*</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/war/work/xml-spring</directory>
+									<targetPath>WEB-INF/xml/spring</targetPath>
+									<includes>
+										<include>tasks.xml</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/war/work/xml-struts</directory>
+									<targetPath>WEB-INF/xml/struts</targetPath>
+									<includes>
+										<include>struts*.xml</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/war/work/img</directory>
+									<targetPath>img</targetPath>
+									<includes>
+										<include>**/*</include>
+									</includes>
+								</resource>
+							</webResources>
+						</configuration>
+					</plugin>
+				</plugins>
+				</pluginManagement>
+			</build>
+        </profile>
+        <profile>
+            <id>env-prod</id>
+            <activation>
+				<activeByDefault>true</activeByDefault>
+                <property>
+					<!-- Activate: mvn -Denv=prod <phase> -->
+                    <name>env</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+			
+			<build>
+				<pluginManagement>
+				<plugins>
+					<plugin>
+						<!-- build con i file di struts e ibatis corretti, un unico file di resources, e properties filtrate o eliminate -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.1.1</version>
+						<configuration>
+							<overlays>
+								<overlay>
+									<groupId>it.maggioli.eldasoft.commons</groupId>
+									<artifactId>geneweb-webapp</artifactId>
+									<excludes>
+										<exclude>WEB-INF/web.xml</exclude>
+										<exclude>WEB-INF/jboss-web.xml</exclude>
+										<exclude>WEB-INF/xml/ibatis/add.xml</exclude>
+										<exclude>WEB-INF/xml/spring/tasks-add.xml</exclude>
+										<exclude>WEB-INF/xml/struts/gene-forward.xml</exclude>
+										<exclude>WEB-INF/classes/*.properties</exclude>
+										<exclude>WEB-INF/pages/homeW_.jsp</exclude>
+										<exclude>META-INF/**</exclude>
+										<exclude>configuration/**</exclude>
+									</excludes>
+								</overlay>
+							</overlays>
+							<warSourceExcludes>WEB-INF/xml/ibatis/add.xml,WEB-INF/xml/spring/tasks-add.xml</warSourceExcludes>
+							<webResources>
+								<resource>
+									<!-- "touch" del web.xml inserito nell'artefatto -->
+									<directory>src/main/webapp/WEB-INF</directory>
+									<targetPath>WEB-INF</targetPath>
+									<includes>
+										<include>web.xml</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+								<resource>
+									<!-- risorse filtrate derivate dalla webapp geneweb-webapp -->
+									<!-- NOTA BENE: MAI METTERE QUESTA RISORSA PER ULTIMA NELLA SEZIONE, ALTRIMENTI PER UN BACO DI MAVEN NON SI COPIANO I FILE! -->
+									<directory>${project.build.directory}/war/work/resources</directory>
+									<targetPath>WEB-INF</targetPath>
+									<excludes>
+										<exclude>**/context*.xml</exclude>
+										<exclude>**/application*.properties</exclude>
+										<!-- rispetto al profilo sviluppo si toglie il file di properties -->
+										<exclude>**/global.properties</exclude>
+									</excludes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/war/work/xml-ibatis</directory>
+									<targetPath>WEB-INF/xml/ibatis</targetPath>
+									<includes>
+										<include>*</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/war/work/xml-spring</directory>
+									<targetPath>WEB-INF/xml/spring</targetPath>
+									<includes>
+										<include>tasks.xml</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/war/work/xml-struts</directory>
+									<targetPath>WEB-INF/xml/struts</targetPath>
+									<includes>
+										<include>struts*.xml</include>
+									</includes>
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/war/work/img</directory>
+									<targetPath>img</targetPath>
+									<includes>
+										<include>**/*</include>
+									</includes>
+								</resource>
+							</webResources>
+						</configuration>
+					</plugin>
+				</plugins>
+				</pluginManagement>
+			</build>
+        </profile>
+    </profiles>
+
+	<build>
+		<!-- filtri prima sul file definito con il profilo in uso, e poi usando il default-filter -->
+		<filters>
+			<filter>${project.build.directory}/dependencies-unpacked/geneweb-webapp/configuration/default-filter.properties</filter>
+			<filter>src/main/filters/${filter.filename}.properties</filter>
+			<filter>custom-filter.properties</filter>
+		</filters>
+
+        <!-- application.properties non va copiata come risorsa in quanto viene fusa nel global.properties -->
+		<!-- tasks-add.properties non va copiata come risorsa in quanto viene fusa nel tasks.properties -->
+		<!-- si escludono i file di resources in quanto vengono concatenati e presi da un'altra cartella -->
+		<resources>
+            <resource>
+                <directory>src/main/resources</directory>
+				<excludes>
+					<exclude>application*.properties</exclude>
+					<exclude>*Resources.properties</exclude>
+				</excludes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+		
+		<pluginManagement>
+		<plugins>
+		
+			<plugin>
+				<!-- si validano i parametri della chiamata -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.4.1</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+						<rules>
+							<requireProperty>
+								<property>filter</property>
+								<message>Valorizzare il parametro -Dfilter con un NOME FILE (senza estensione) presente nella cartella src/main/filters</message>
+							</requireProperty>
+						</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>		
+
+			<plugin>
+				<!-- espande in una cartella di appoggio alcuni file presenti in geneweb per le successive elaborazioni -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>unpack-geneweb-dependencies</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/dependencies-unpacked/geneweb-webapp</outputDirectory>
+							<verbose>true</verbose>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<appendOutput>true</appendOutput>
+							<includeGroupIds>it.maggioli.eldasoft.commons</includeGroupIds>
+							<includeArtifactIds>geneweb-webapp</includeArtifactIds>
+							<includes>configuration/*,WEB-INF/jboss-web.xml,WEB-INF/classes/*.properties,WEB-INF/xml/ibatis/*.xml,WEB-INF/xml/struts/gene-forward.xml,WEB-INF/xml/spring/tasks.xml,META-INF/context*.xml</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>                   	   
+					<!-- task per la copia del global-forward.xml di struts per il merge in modo da collocarlo nel posto previsto dalla configurazione -->
+					<execution>
+						<id>process-sources-antrun</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>                        
+						<configuration>
+							<target>
+								<echo>Copia sorgenti in corso...</echo>
+								<copy file="${project.build.directory}/dependencies-unpacked/geneweb-webapp/WEB-INF/xml/struts/gene-forward.xml" tofile="${project.build.directory}/war/work/xml-struts/gene-forward.xml"/>
+								<echo>Sorgenti copiati...</echo>
+							</target>
+						</configuration>
+					</execution>                    
+					<execution>
+						<!-- task di fusione dei file di resources -->
+						<id>process-resources-antrun</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>                        
+						<configuration>
+							<target>
+								<echo>Merge resources in corso...</echo>
+								<concat destfile="${project.build.directory}/war/work/resources/AliceResources.properties" append="true">
+									<fileset dir="${project.build.directory}/war/work/resources/classes" includes="*Resources.properties" />
+									<fileset dir="src/main/resources" includes="*Resources.properties" />
+								</concat>
+								<move file="${project.build.directory}/war/work/resources/AliceResources.properties" toDir="${project.build.directory}/war/work/resources/classes" />
+								<echo>Merge resources effettuato...</echo>
+								<echo>Creazione directory per immagini in corso...</echo>
+								<mkdir dir="${project.build.directory}/war/work/img" />
+								<echo>Creazione directory per immagini effettuato...</echo>
+							</target>
+						</configuration>
+					</execution>                    
+					<execution>
+						<id>merge-properties-antrun</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>                        
+						<!-- task di merge delle properties -->
+						<!-- task di rename gene (ex file cifrato) -->
+						<!-- task di generazione file di context -->
+						<configuration>
+							<target>
+								<echo>Merge e creazione gene.properties in corso...</echo>
+								<concat destfile="${project.build.directory}/war/work/resources/classes/global.properties" append="true">
+									<fileset dir="${project.build.directory}/war/work/resources/classes" includes="application.properties" />
+								</concat>
+								<move file="${project.build.directory}/war/work/resources/classes/gene_sprotetto.properties" tofile="${project.build.directory}/war/work/resources/classes/gene.properties" />
+								<echo>Merge e creazione gene.properties effettuato...</echo>
+								<echo>Generazione ${build.finalName}.xml in corso...</echo>
+								<copy file="${project.build.directory}/war/work/META-INF/context.xml" tofile="${project.build.directory}/${build.finalName}.xml" />
+								<copy file="${project.build.directory}/war/work/META-INF/context-tomcat8.xml" tofile="${project.build.directory}/${build.finalName}-tomcat8.xml" />
+								<echo>Generazione ${build.finalName}.xml effettuato...</echo>
+							</target>
+						</configuration>
+					</execution>    
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!-- effettua l'iniezione dei global forward nei file di struts -->
+				<groupId>com.google.code.maven-config-processor-plugin</groupId>
+				<artifactId>maven-config-processor-plugin</artifactId>
+				<version>2.0</version>			
+				<executions>
+					<execution>
+						<id>xml-struts</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${project.build.directory}/war/work/xml-struts</outputDirectory>
+							<transformations>
+								<transformation>
+									<input>src/main/webapp/WEB-INF/xml/struts/struts-config-${codapp}.xml</input>
+									<output>struts-config-${codapp}.xml</output>
+									<config>${project.build.directory}/dependencies-unpacked/geneweb-webapp/configuration/struts-transformation.xml</config>
+								</transformation>
+							</transformations>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xml-ibatis</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${project.build.directory}/war/work/xml-ibatis</outputDirectory>
+							<transformations>
+								<transformation>
+									<input>${project.build.directory}/dependencies-unpacked/geneweb-webapp/WEB-INF/xml/ibatis/sql-map-config.xml</input>
+									<output>sql-map-config.xml</output>
+									<config>${project.build.directory}/dependencies-unpacked/geneweb-webapp/configuration/ibatis-transformation.xml</config>
+								</transformation>
+							</transformations>
+						</configuration>
+					</execution>
+					<execution>
+						<id>xml-spring-task</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<encoding>UTF-8</encoding>
+							<outputDirectory>${project.build.directory}/war/work/xml-spring</outputDirectory>
+							<transformations>
+								<transformation>
+									<input>${project.build.directory}/dependencies-unpacked/geneweb-webapp/WEB-INF/xml/spring/tasks.xml</input>
+									<output>tasks.xml</output>
+									<config>${project.build.directory}/dependencies-unpacked/geneweb-webapp/configuration/spring-tasks-transformation.xml</config>
+								</transformation>
+							</transformations>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<!-- copia i file di geneweb per i quali si richiede il filtraggio con le sostituzioni -->
+					<execution>
+						<id>filter-resources</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/war/work/resources</outputDirectory>
+							<resources>          
+								<resource>
+									<directory>${project.build.directory}/dependencies-unpacked/geneweb-webapp/WEB-INF</directory>
+									<excludes>
+										<exclude>xml/**</exclude>
+										<exclude>pages/**</exclude> <!-- se dovessero esserci nei pom figli...-->
+									</excludes>
+									<filtering>true</filtering> <!-- si mantiene per webconsole -->
+								</resource>
+								<resource>
+									<directory>${project.build.directory}/dependencies-unpacked/geneweb-webapp/META-INF</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>              
+						</configuration>            
+					</execution>
+					<execution>
+						<id>filter-context</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/war/work/META-INF</outputDirectory>
+							<resources>          
+								<resource>
+									<directory>${project.build.directory}/dependencies-unpacked/geneweb-webapp/META-INF</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>              
+						</configuration>            
+					</execution>
+					<!-- copia e filtra il file application.properties e task-add.properties dell'applicativo -->
+					<execution>
+						<id>filter-application-tasks</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/war/work/resources/classes</outputDirectory>
+							<resources>          
+								<resource>
+									<directory>src/main/resources</directory>
+									<includes>
+										<include>application*.properties</include> 
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>              
+						</configuration>            
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+		</pluginManagement>
+	</build>
+</project>

@@ -1,3 +1,6 @@
-#Last modified on: Thu Dec 16 12:20:29 CET 2021
-#Thu Dec 16 12:20:29 CET 2021
-http\://elda-repo-sw.asifarm.it\:8081/nexus/content/groups/public=1639653629233
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Jan 18 09:23:43 CET 2022
+http\://elda-repo-sw.asifarm.it\:8081/nexus/content/groups/public/.error=Could not transfer artifact it.toscana.regione.sitat\:sitat-commons-data\:pom\:5.5.0 from/to nexus (http\://elda-repo-sw.asifarm.it\:8081/nexus/content/groups/public)\: Connect to elda-repo-sw.asifarm.it\:8081 [elda-repo-sw.asifarm.it/80.88.161.245] failed\: Connection timed out\: connect
+http\://insecure.repo1.maven.org/maven2/.error=
+http\://insecure.repo1.maven.org/maven2/.lastUpdated=1642494223921
+@default-nexus-http\://elda-repo-sw.asifarm.it\:8081/nexus/content/groups/public/.lastUpdated=1638548727910
