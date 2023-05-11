@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+	<groupId>it.maggioli.eldasoft</groupId>
+	<artifactId>eldasoft-base</artifactId>
+	<version>8.0</version>
+  </parent>
+  
+  <groupId>it.maggioli.eldasoft.simog-avcp</groupId>
+
+  <artifactId>simog-wspdd-client</artifactId>
+
+  <version>3.04.8</version>
+  <packaging>jar</packaging>
+
+  <name>Simog-Wspdd-Client</name>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <build>
+  	<plugins>
+		<plugin>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-wsdl2code-maven-plugin</artifactId>
+			<version>1.6.2</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>wsdl2code</goal>
+					</goals>
+					<configuration>
+						<packageName>it.avlp.simog.massload.xmlbeans</packageName>
+						<wsdlFile>src/main/wsdl/SimogWSPDD.wsdl</wsdlFile>
+						<databindingName>xmlbeans</databindingName>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
+
+		<plugin>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>3.2.0</version>
+			<executions>
+				<execution>
+					<id>copy-resources</id>
+					<!-- here the phase you need package -->
+					<phase>process-test-resources</phase>
+					<goals>
+						<goal>copy-resources</goal>
+					</goals>
+					<configuration>
+						<outputDirectory>${basedir}/target/classes</outputDirectory>
+						<resources>          
+							<resource>
+								<directory>${basedir}/target/generated-sources/axis2/wsdl2code/resources</directory>
+							</resource>
+						</resources>
+					</configuration>            
+				</execution>
+			</executions>
+		</plugin>
+
+  	</plugins>
+  </build>
+  
+  <dependencies>
+
+	<dependency>
+		<groupId>org.apache.axis2</groupId>
+		<artifactId>axis2-xmlbeans</artifactId>
+		<version>1.6.2</version>
+	</dependency>
+   
+  </dependencies>
+</project>

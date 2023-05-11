@@ -1,0 +1,8 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Aug 05 15:26:31 CEST 2022
+http\://elda-repo-sw.asifarm.it\:8081/nexus/content/groups/public/.error=
+https\://repo.maven.apache.org/maven2/.lastUpdated=1659705991344
+https\://nexus.maggiolicloud.it/repository/appalti-repo/.lastUpdated=1658741184322
+https\://nexus.maggiolicloud.it/repository/appalti-repo/.error=
+https\://repo.maven.apache.org/maven2/.error=
+http\://elda-repo-sw.asifarm.it\:8081/nexus/content/groups/public/.lastUpdated=1653296417909
