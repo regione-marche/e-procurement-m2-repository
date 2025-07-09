@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.maggioli.eldasoft</groupId>
+		<artifactId>eldasoft-base</artifactId>
+		<version>8.0</version>
+	</parent>
+  <groupId>it.appaltiecontratti.agid</groupId>
+  <artifactId>archivia-documenti-datatypes</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>ArchiviaDocumenti-DataTypes</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+	</dependencies>
+		
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.codehaus.mojo</groupId>
+  			<artifactId>xmlbeans-maven-plugin</artifactId>
+  			<version>2.3.3</version>
+  			<executions>
+  				<execution>
+  					<goals>
+  						<goal>xmlbeans</goal>
+  					</goals>
+  				</execution>
+  			</executions>
+  			
+  			<!-- configurazione per compilare con JDK11 -->
+  			<configuration>
+  				<javaSource>1.5</javaSource> <!-- only "1.5" is actually recognized, others values revert to "1.4" code -->
+				<noJavac>true</noJavac> 	 <!-- prevent XmlBeans from calling javac directly with "-source 1.5", which is unsupported on new Java versions -->
+	      	</configuration>
+	      	
+			<inherited>true</inherited>
+  		</plugin>
+  	</plugins>
+  </build>
+</project>

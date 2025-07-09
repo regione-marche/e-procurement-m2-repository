@@ -42,12 +42,12 @@
 		<repository>
 			<id>eldasoft.release.repo</id>
 			<name>Eldasoft Internal RELEASE Repository</name>
-			<url>http://elda-repo-sw.asifarm.it:8081/nexus/content/repositories/releases</url>
+			<url>https://nexus.maggiolicloud.it/repository/appalti-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>eldasoft.snapshot.repo</id>
 			<name>Eldasoft Internal SNAPSHOT Repository</name>
-			<url>http://elda-repo-sw.asifarm.it:8081/nexus/content/repositories/snapshots</url>
+			<url>https://nexus.maggiolicloud.it/repository/appalti-snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
 	

@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>it.maggioli.eldasoft</groupId>
+		<artifactId>eldasoft-base</artifactId>
+		<version>8.0</version>
+	</parent>
+
+	<groupId>it.maggioli.eldasoft.portal</groupId>
+	<artifactId>eldasoft-portgare-datatypes-parent</artifactId>
+	<version>4.8.0</version>
+	<packaging>pom</packaging>
+
+	<name>PortaleAppalti-DataTypes-parent</name>
+
+	<modules>
+		<module>jaxb-portale-gare-data</module>
+		<module>eldasoft-portgare-datatypes</module>
+	</modules>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+</project>

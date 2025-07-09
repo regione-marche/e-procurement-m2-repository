@@ -7,15 +7,18 @@
 	<packaging>pom</packaging>
 	<version>8.0</version>
 	<organization>
-		<name>Eldasoft S.p.A.</name>
+		<name>Maggioli S.p.A. - Area appalti e lavori</name>
 	</organization>
 	<name>Super POM aziendale</name>
-
-	<properties>
-		<tomcat.url>http://localhost:8080/manager</tomcat.url>
-	</properties>
 	
 	<build>
+        <extensions>
+            <extension>
+                <groupId>com.google.cloud.artifactregistry</groupId>
+                <artifactId>artifactregistry-maven-wagon</artifactId>
+                <version>2.2.0</version>
+            </extension>
+        </extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -26,28 +29,43 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>tomcat-maven-plugin</artifactId>
-				<configuration>
-					<url>${tomcat.url}</url>
-					<server>mytomcat</server>
-					<path>/${build.finalName}</path>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
+    <repositories>
+        <repository>
+            <id>appalti-registry</id>
+            <url>artifactregistry://europe-west1-maven.pkg.dev/maggioli-registry/appalti-releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>appalti-registry-snapshots</id>
+            <url>artifactregistry://europe-west1-maven.pkg.dev/maggioli-registry/appalti-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
 	<distributionManagement>
 		<repository>
-			<id>eldasoft.release.repo</id>
+            <id>appalti-registry</id>
 			<name>Eldasoft Internal RELEASE Repository</name>
-			<url>http://elda-repo-sw.asifarm.it:8081/nexus/content/repositories/releases</url>
+			<url>artifactregistry://europe-west1-maven.pkg.dev/maggioli-registry/appalti-releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>eldasoft.snapshot.repo</id>
+            <id>appalti-registry-snapshots</id>
 			<name>Eldasoft Internal SNAPSHOT Repository</name>
-			<url>http://elda-repo-sw.asifarm.it:8081/nexus/content/repositories/snapshots</url>
+			<url>artifactregistry://europe-west1-maven.pkg.dev/maggioli-registry/appalti-snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
 	
